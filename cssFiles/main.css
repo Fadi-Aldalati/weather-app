@@ -1,11 +1,19 @@
 body{
-    background:url("../img/background.jpg");
+    background:url("../img/background-2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
+    color:white;
 }
-header{
+.center{
     text-align:center;
-    
+
 }
+.left-align{
+    text-align:left;
+    padding-left:40px;
+}
+.column {
+    float: left;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+  }

@@ -1,8 +1,8 @@
 body{
-    background:url("../img/background-2.jpg");
+    background:url("../img/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    color:white;
+    color:black;
 }
 .center{
     text-align:center;
@@ -42,9 +42,12 @@ body{
 .grid-item-active{
   padding: 20px;
     text-align: center;
-  text-shadow:3px 3px red ;
+  text-shadow:3px 3px 3px  blue ;
 }
 .grid-item-main:hover{
+  cursor: pointer;
+}
+.grid-item-main-animated:hover{
   cursor: pointer;
 }
   .paddingTop{
@@ -58,8 +61,18 @@ body{
 }
 @keyframes presenting{
   0%{opacity:0;
-        right:0px;
+        
   }
   100%{opacity:1;
-    right:100px;  }
+     }
+}
+.button-container{
+  margin-left:60px;
+}
+.rounded{
+  border-radius: 2em;
+}
+.icon{
+  height:50px;
+  width:50px;
 }

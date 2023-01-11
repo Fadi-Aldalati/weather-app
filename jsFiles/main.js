@@ -1,24 +1,27 @@
-  setInterval(function(){
-    window.location.reload();
-  }, 300000);
-       function checkTime (i){
-          if(i<10) {i="0"+i};
-          return i;
-        }
-        function startTime(){
-          const today = new Date();
-          let h = today.getHours();
-          let m = today.getMinutes();
-          let s = today.getSeconds();
-          m= checkTime(m);
-          s = checkTime(s);
-          let ap = h >= 12 ? 'pm' : 'am';
-          if(h > 12) h=h-12;
-          document.getElementById("date").innerHTML = h +":"+m + ':' +s + " "+ap;
-          setTimeout(startTime, 1000);
-        }
-      var weatherData;
-    var today = new Date();
+let city="Latakia";
+ 
+   var weatherData;
+   
+   const kelvin = 273;
+
+
+function test(value){
+  city=value;
+  
+  document.getElementById('getCity').value='';
+  dataRetrieve();
+}  
+function update(t){
+  if(t<10){
+    return "0" + t;
+  }
+  else{
+    return t;
+  }
+}  
+
+function dataRetrieve(){
+  var today = new Date();
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   
    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -31,14 +34,20 @@
         let lat;
         var id;
         let listCounter=1;let idCounter;
-    const kelvin = 273;
-
-let todayIcon;let todaySummary;let high;let low;
-
+        let todayIcon;
+        let todaySummary;
+        let high;
+        let low;
 
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-     // console.log(position);
+    let main = document.getElementById("detailsOfDay");
+            var child = main.lastElementChild;
+          while(child){
+            main.removeChild(child);
+            child = main.lastElementChild;
+          }
+      navigator.geolocation.getCurrentPosition((position) => {
+     
       lon = position.coords.longitude;
       lat = position.coords.latitude;
   
@@ -47,7 +56,7 @@ let todayIcon;let todaySummary;let high;let low;
   
       // API URL
       const base =
-        `http://api.openweathermap.org/data/2.5/forecast?q=Latakia,Syria&lat=${lat}&` +
+        `http://api.openweathermap.org/data/2.5/forecast?q=${city}&lat=${lat}&` +
         `lon=${lon}&appid=6d055e39ee237af35ca066f35474e9df`;
        
       // Calling the API
@@ -57,6 +66,7 @@ let todayIcon;let todaySummary;let high;let low;
           return response.json();
         })
         .then((data) => {
+
           idCounter=0;
           weatherData=data;
           console.log(data);
@@ -71,7 +81,8 @@ let todayIcon;let todaySummary;let high;let low;
         }
         var today = data.list[listCounter];
           summary = today.weather[0].description;
-            todayIcon = `./icons/${summary}.png`;
+          var iconCode =today.weather[0].icon;
+            todayIcon = "http://openweathermap.org/img/w/"+iconCode+".png";
             document.getElementById('todayIcon').innerHTML = `<img src="${todayIcon}" /> <div class="paddingTop"> ${Math.floor(today.main.temp - kelvin)} °C </div> `
           document.getElementById('high').innerHTML = "High : " + Math.floor(today.main.temp_max - kelvin) + " °C";
           document.getElementById('low').innerHTML = "Low : " + Math.floor(today.main.temp_min - kelvin) + " °C";
@@ -81,38 +92,51 @@ let todayIcon;let todaySummary;let high;let low;
           
           document.getElementById('head').textContent = data.city.name + " City / "+data.city.country; 
           var main = document.getElementById('main');
-          
+          var child = main.lastElementChild;
+          while(child){
+            main.removeChild(child);
+            child = main.lastElementChild;
+          }
           for (var i=1;i<6;i++){
+            var currentItem = data.list[listCounter];
             var item = document.createElement("div");
             item.style.animationName = "presenting";
-            item.style.animationDuration=`${i}s`;
+            item.style.animationDuration=`${i-0.3*i}s`;
             item.setAttribute('class','grid-item-main-animated');
             item.setAttribute('id',`${i}`);
             item.setAttribute('onclick',`details(document.getElementById(${i}),${i})`)
             main.appendChild(item);
             var day = document.createElement("div");
-            day.textContent = days[new Date(data.list[listCounter].dt*1000-(data.city.timezone*1000)).getDay()];
+            day.textContent = days[new Date(currentItem.dt*1000-(data.city.timezone*1000)).getDay()];
             
             item.appendChild(day);
             var summary = document.createElement('div');
-            summary.textContent = data.list[listCounter].weather[0].description;
-            var icon = document.createElement('div');
-            let icon1 = `./icons/${summary.textContent}.png`;
-            icon.innerHTML = `<img src="${icon1}" />`;
+            summary.textContent = currentItem.weather[0].description;
+            var icon = document.createElement('img');
+            iconCode =currentItem.weather[0].icon;
+            let icon1="http://openweathermap.org/img/w/"+iconCode+".png";
+            icon.setAttribute('src',`${icon1}`);
+            icon.setAttribute('class','icon');
             item.appendChild(icon);
             let temp = document.createElement('div');
-            temp.textContent = Math.floor(data.list[listCounter].main.temp - kelvin) + " °C";
+            temp.textContent = Math.floor(currentItem.main.temp - kelvin) + " °C";
             item.appendChild(temp);
             let dayDate = document.createElement('div');
-            dayDate.textContent= data.list[listCounter].dt_txt.slice(0,10);
+            dayDate.textContent= currentItem.dt_txt.slice(0,10);
             item.appendChild(summary);
             item.appendChild(dayDate);
             listCounter+=8;
             
-          }});
+          }
+          
+        });
     });
   }
- 
+  
+  
+}
+  
+dataRetrieve();
 
 function details(element,id){
   
@@ -151,7 +175,7 @@ function details(element,id){
             let weather=weatherData.list[i];
             let item = document.createElement("div");
             item.setAttribute("class","grid-item");
-            item.style.animationDuration=`${j-0.5 *j}s`;
+            item.style.animationDuration=`${j-0.7 *j}s`;
             main.appendChild(item);
            
             let hour =document.createElement("div");
@@ -169,7 +193,8 @@ function details(element,id){
             let summary = document.createElement("div");
             summary.textContent = weather.weather[0].description;
             let icon =document.createElement("div");
-            let icon1 = `./icons/${summary.textContent}.png`;
+            var iconCode =weather.weather[0].icon;
+            let icon1 = "http://openweathermap.org/img/w/"+iconCode+".png";
             icon.innerHTML = `<img src="${icon1}" />`;
             item.appendChild(icon);
             let temp = document.createElement("div");
@@ -179,4 +204,13 @@ function details(element,id){
           }
           element.setAttribute('class','grid-item-active');
         };
+
+        setInterval(function(){
+          window.location.reload();
+        }, 300000);
+             function checkTime (i){
+                if(i<10) {i="0"+i};
+                return i;
+              }
+               
 /* new Date(data.city.sunset*1000-(data.city.timezone*1000)).getHours(); */

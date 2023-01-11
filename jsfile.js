@@ -24,15 +24,15 @@
              document.getElementById("today").innerHTML = today.toLocaleDateString("en-US", options);
              document.getElementById("date").innerHTML
 
-             let lon;
+        let lon;
         let lat;
-        var k=1;var id;
-        let listCounter=0;let idCounter;
+        var id;
+        let listCounter=1;let idCounter;
 const kelvin = 273;
-var temperature ;let summary;let loc ;let icon;let day;let dayDate;
+//var temperature ;let summary;let loc ;let icon;let day;let dayDate;
 let todayIcon;let todaySummary;let high;let low;
 
-window.addEventListener("load", () => {
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
       console.log(position);
@@ -56,67 +56,62 @@ window.addEventListener("load", () => {
         .then((data) => {
           idCounter=0;
           weatherData=data;
-          
-          let now = parseInt(data.list[0].dt_txt[9])+(parseInt(data.list[0].dt_txt[8])*10);
-          let first = data.list[0];
-
-          document.getElementById('head').textContent = data.city.name + " City / "+data.city.country; 
-
-            summary = first.weather[0].description;
+          console.log(data);
+          let now = data.list[0].dt_txt.slice(8,11);
+          let firstContent = data.list[0];
+          while (listCounter){
+            if(data.list[listCounter].dt_txt.slice(8,11)!= now && data.list[listCounter].dt > data.list[0].dt){
+                listCounter = parseInt(listCounter/2);
+                break;
+            }
+            listCounter++;
+        }
+        var today = data.list[listCounter];
+          summary = today.weather[0].description;
             todayIcon = `./icons/${summary}.png`;
-            document.getElementById('todayIcon').innerHTML = `<img src="${todayIcon}" /> <div class="paddingTop"> ${Math.floor(first.main.temp - kelvin)} °C </div> `
-          document.getElementById('high').innerHTML = "High : " + Math.floor(first.main.temp_max - kelvin) + " °C";
-          document.getElementById('low').innerHTML = "Low : " + Math.floor(first.main.temp_min - kelvin) + " °C";
-          document.getElementById('wind').innerHTML ="Wind : "+ first.wind.speed + " m/s";
-          document.getElementById('humidity').innerHTML ="Humidity : "+ first.main.humidity + " %";
+            document.getElementById('todayIcon').innerHTML = `<img src="${todayIcon}" /> <div class="paddingTop"> ${Math.floor(today.main.temp - kelvin)} °C </div> `
+          document.getElementById('high').innerHTML = "High : " + Math.floor(today.main.temp_max - kelvin) + " °C";
+          document.getElementById('low').innerHTML = "Low : " + Math.floor(today.main.temp_min - kelvin) + " °C";
+          document.getElementById('wind').innerHTML ="Wind : "+ today.wind.speed + " m/s";
+          document.getElementById('humidity').innerHTML ="Humidity : "+ today.main.humidity + " %";
 
-
-            console.log(data);
-
-            for (var i=0;i<5;i++){
-              temperature = document.getElementsByClassName("temp")[i];
-              summary = document.getElementsByClassName("summary")[i];
-              dayOf = document.getElementsByClassName("day")[i];
-              icon = document.getElementsByClassName("icon")[i];
-              dayDate = document.getElementsByClassName("dayDate")[i];
-             
-              
-
-
-              day =days[new Date(data.list[listCounter].dt*1000-(data.city.timezone*1000)).getDay()];
-
-           
-                temperature.textContent = 
-                    Math.floor(data.list[listCounter].main.temp - kelvin) + " °C";
-                summary.textContent = data.list[listCounter].weather[0].description;
-                dayOf.textContent = day ; 
-                dayDate.textContent= data.list[listCounter].dt_txt.slice(0,10);
-                let icon1 = `./icons/${summary.textContent}.png`;
-               
-                icon.innerHTML = `<img src="${icon1}" />`;
-                   if(k<0)  {listCounter +=8 ;
-                     idCounter+=8;
-                  }
-                       
-                   
-                    while(k>0){
-                        if(parseInt(data.list[k].dt_txt[9])+(parseInt(data.list[k].dt_txt[8])*10) != now && data.list[k].dt > data.list[0].dt){
-                            listCounter = k+4;
-                            idCounter = k;
-                            k=-3; }
-                        k++;
-
-                    }
-                }
-                
-        });
+          
+          document.getElementById('head').textContent = data.city.name + " City / "+data.city.country; 
+          var main = document.getElementById('main');
+          
+          for (var i=1;i<6;i++){
+            var item = document.createElement("div");
+            item.setAttribute('class','grid-item-main');
+            item.setAttribute('id',`${i}`);
+            item.setAttribute('onclick',`details(document.getElementById(${i}),${i})`)
+            main.appendChild(item);
+            var day = document.createElement("div");
+            day.textContent = days[new Date(data.list[listCounter].dt*1000-(data.city.timezone*1000)).getDay()];
+            item.appendChild(day);
+            var summary = document.createElement('div');
+            summary.textContent = data.list[listCounter].weather[0].description;
+            var icon = document.createElement('div');
+            let icon1 = `./icons/${summary.textContent}.png`;
+            icon.innerHTML = `<img src="${icon1}" />`;
+            item.appendChild(icon);
+            let temp = document.createElement('div');
+            temp.textContent = Math.floor(data.list[listCounter].main.temp - kelvin) + " °C";
+            item.appendChild(temp);
+            let dayDate = document.createElement('div');
+            dayDate.textContent= data.list[listCounter].dt_txt.slice(0,10);
+            item.appendChild(summary);
+            item.appendChild(dayDate);
+            listCounter+=8;
+            
+          }});
     });
   }
-});
+ 
 
 function details(element,id){
+  
   for(var j=1;j<6;j++){
-    document.getElementById(j).setAttribute('class','grid-item');
+    document.getElementById(j).setAttribute('class','grid-item-main');
   }
    k=1;
    var listId=0;var nextList=0;
@@ -130,7 +125,7 @@ function details(element,id){
               k++;
 
               }
-          if(id==='1'){
+          if(id===1){
             listId=0;
             nextList=k;
           }
@@ -174,66 +169,4 @@ function details(element,id){
             item.appendChild(summary);
           }
           element.setAttribute('class','grid-item-active');
-
-}
-/*for (var i=0;i<5;i++){
-temperature = document.getElementsByClassName("temp")[i];}*/
-
-
-
-
-/*
-var x ="";
-x = <
-let temperature = document.querySelector(".temp");
-let summary = document.querySelector(".summary");
-let loc = document.querySelector(".location");
-let icon = document.querySelector(".icon");
-*/
-/*
-  
-
-
-window.addEventListener("click", () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log(position);
-      lon = position.coords.longitude;
-      lat = position.coords.latitude;
-  
-      // API ID
-      const api = "kkjumv4bojd51vw23xdrfosd07uq8thwih2d8twd";
-  
-      // API URL
-      const base =
-        `http://api.openweathermap.org/data/2.5/forecast?q=Latakia,Syria&lat=${lat}&` +
-        `lon=${lon}&appid=6d055e39ee237af35ca066f35474e9df`;
-       
-      // Calling the API
-      
-      fetch(base)
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          
-          let now = parseInt(data.list[0].dt_txt[9])+(parseInt(data.list[0].dt_txt[8])*10);
-          console.log(data);
-          if(element===1){
-            listId=0;
-          }
-          else{
-            while(k>0){
-              if(parseInt(data.list[k].dt_txt[9])+(parseInt(data.list[k].dt_txt[8])*10) != now && data.list[k].dt > data.list[0].dt){
-                  listId = k*((element-1)*8);
-                  k=-3; }
-              k++;
-
-          }
-
-          }
-          console.log(listId);
-        });
-    });
-  }
-});*/
+        };

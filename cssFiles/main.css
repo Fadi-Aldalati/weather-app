@@ -28,10 +28,17 @@ body{
     padding: 20px;
     text-align: center;
   }
+  .grid-item-main {
+    padding: 20px;
+    text-align: center;
+  }
 .grid-item-active{
   padding: 20px;
     text-align: center;
   text-shadow:3px 3px red ;
+}
+.grid-item-main:hover{
+  cursor: pointer;
 }
   .paddingTop{
     padding-top:20px;

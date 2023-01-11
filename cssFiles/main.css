@@ -1,5 +1,5 @@
 body{
-    background:url("../img/background-1.jpg");
+    background:url("../img/background-2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     color:white;
@@ -27,10 +27,17 @@ body{
 .grid-item {
     padding: 20px;
     text-align: center;
+    animation-name:presenting;
   }
   .grid-item-main {
     padding: 20px;
     text-align: center;
+    
+  }
+  .grid-item-main-animated {
+    padding: 20px;
+    text-align: center;
+   
   }
 .grid-item-active{
   padding: 20px;
@@ -48,4 +55,11 @@ body{
   gap: 10px;
   grid-template-columns: auto auto auto auto auto auto auto auto;
   padding:10 px;
+}
+@keyframes presenting{
+  0%{opacity:0;
+        right:0px;
+  }
+  100%{opacity:1;
+    right:100px;  }
 }

@@ -1,5 +1,5 @@
 body{
-    background:url("../img/background-2.jpg");
+    background:url("../img/background-1.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     color:white;
@@ -23,10 +23,22 @@ body{
   grid-template-columns: auto auto auto auto auto auto ;
   padding: 10px;
 }
+
 .grid-item {
     padding: 20px;
     text-align: center;
   }
+.grid-item-active{
+  padding: 20px;
+    text-align: center;
+  text-shadow:3px 3px red ;
+}
   .paddingTop{
     padding-top:20px;
   }
+.grid-container-details{
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto auto auto auto auto auto auto auto;
+  padding:10 px;
+}

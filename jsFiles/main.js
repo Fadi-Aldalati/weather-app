@@ -1,35 +1,28 @@
+
 let city="Latakia";
  
    var weatherData;
    
    const kelvin = 273;
 
+   const loader = document.querySelector("#loading");
+   const button = document.querySelector("#button");
 
 function test(value){
   city=value;
   
   document.getElementById('getCity').value='';
-  dataRetrieve();
-}  
-function update(t){
-  if(t<10){
-    return "0" + t;
-  }
-  else{
-    return t;
-  }
-}  
-
-function dataRetrieve(){
-  var today = new Date();
+  hideMain();
+  hideButton();
+  dataRetriever();}  
+  function dataRetriever() {
+    displayLoading();
+    var today = new Date();
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   
    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                    
-            var dayName = days[today.getDay()];
-             document.getElementById("today").innerHTML = today.toLocaleDateString("en-US", options);
-             document.getElementById("date").innerHTML
 
+        var dayName = days[today.getDay()];
         let lon;
         let lat;
         var id;
@@ -40,7 +33,7 @@ function dataRetrieve(){
         let low;
 
   if (navigator.geolocation) {
-    let main = document.getElementById("detailsOfDay");
+   let main = document.getElementById("detailsOfDay");
             var child = main.lastElementChild;
           while(child){
             main.removeChild(child);
@@ -66,7 +59,10 @@ function dataRetrieve(){
           return response.json();
         })
         .then((data) => {
-
+          hideLoading();
+          displayMain();
+          displayButton();
+          
           idCounter=0;
           weatherData=data;
           console.log(data);
@@ -83,13 +79,14 @@ function dataRetrieve(){
           summary = today.weather[0].description;
           var iconCode =today.weather[0].icon;
             todayIcon = "http://openweathermap.org/img/w/"+iconCode+".png";
-            document.getElementById('todayIcon').innerHTML = `<img src="${todayIcon}" /> <div class="paddingTop"> ${Math.floor(today.main.temp - kelvin)} °C </div> `
+            document.getElementById('todayIcon').innerHTML = `<img class="mainIcon" src="${todayIcon}" /> <div class="paddingTop"> ${Math.floor(today.main.temp - kelvin)} °C </div> `
           document.getElementById('high').innerHTML = "High : " + Math.floor(today.main.temp_max - kelvin) + " °C";
           document.getElementById('low').innerHTML = "Low : " + Math.floor(today.main.temp_min - kelvin) + " °C";
           document.getElementById('wind').innerHTML ="Wind : "+ today.wind.speed + " m/s";
           document.getElementById('humidity').innerHTML ="Humidity : "+ today.main.humidity + " %";
 
-          
+          document.getElementById("today").innerHTML =new Date(firstContent.dt*1000-(data.city.timezone*1000)).toLocaleDateString("en-US", options);
+
           document.getElementById('head').textContent = data.city.name + " City / "+data.city.country; 
           var main = document.getElementById('main');
           var child = main.lastElementChild;
@@ -109,6 +106,8 @@ function dataRetrieve(){
             var day = document.createElement("div");
             day.textContent = days[new Date(currentItem.dt*1000-(data.city.timezone*1000)).getDay()];
             
+            
+
             item.appendChild(day);
             var summary = document.createElement('div');
             summary.textContent = currentItem.weather[0].description;
@@ -136,7 +135,32 @@ function dataRetrieve(){
   
 }
   
-dataRetrieve();
+window.addEventListener("load", dataRetriever);
+
+function displayLoading() {
+  var element = document.getElementById('loaderContainer');
+  element.setAttribute('class','loaderContainer');
+  loader.classList.add("display");
+  
+}
+function hideLoading() {
+  var element = document.getElementById('loaderContainer');
+  element.removeAttribute('class');
+  document.getElementById('body').setAttribute('class','main');
+  loader.classList.remove("display");
+}
+function displayButton() {
+  button.classList.add("display");
+}
+function hideButton() {
+  button.classList.remove("display");
+}
+function displayMain(){
+  body.classList.remove("hide");
+}
+function hideMain(){
+  body.classList.add('hide');
+}
 
 function details(element,id){
   
@@ -175,7 +199,7 @@ function details(element,id){
             let weather=weatherData.list[i];
             let item = document.createElement("div");
             item.setAttribute("class","grid-item");
-            item.style.animationDuration=`${j-0.7 *j}s`;
+            item.style.animationDuration=`${j-0.5 *j}s`;
             main.appendChild(item);
            
             let hour =document.createElement("div");

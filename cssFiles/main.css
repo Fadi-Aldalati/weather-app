@@ -15,7 +15,7 @@ body{
     display: grid;
     gap: 50px;
   grid-template-columns: auto auto auto auto auto;
-  padding: 10px;
+  padding: 7px;
 }
 .grid-container-main {
   display: grid;
@@ -37,12 +37,13 @@ body{
   .grid-item-main-animated {
     padding: 20px;
     text-align: center;
-   
+    
   }
 .grid-item-active{
   padding: 20px;
     text-align: center;
-  text-shadow:3px 3px 3px  blue ;
+  text-shadow:3px 3px 4px  blue ;
+  background:rgba(0, 173, 255, 0.3);
 }
 .grid-item-main:hover{
   cursor: pointer;
@@ -57,17 +58,20 @@ body{
   display: grid;
   gap: 10px;
   grid-template-columns: auto auto auto auto auto auto auto auto;
-  padding:10 px;
+  padding:10px;
+ 
 }
 @keyframes presenting{
-  0%{opacity:0;
-        
-  }
-  100%{opacity:1;
-     }
+  from{ margin-top:40px;opacity:0;}
+  to {margin-top:0px;opacity:1;}
 }
-.button-container{
+
+#button{
   margin-left:60px;
+  visibility:hidden;
+}
+#button.display{
+  visibility:visible;
 }
 .rounded{
   border-radius: 2em;
@@ -75,4 +79,43 @@ body{
 .icon{
   height:50px;
   width:50px;
+}
+.mainIcon{
+  height:55px;
+  width:50px; }
+#loading {
+    width: 3rem;
+    height: 3rem;
+    border: 5px solid black;//#f3f3f3;
+    border-top: 6px solid white;//#9c41f2;
+    border-radius: 100%;
+    margin: auto;
+    visibility: hidden;
+    animation: spin 1s infinite linear;
+    
+}
+#loading.display {
+    visibility: visible;
+}
+.loaderContainer{
+  padding-top:350px;
+  text-align: center;
+  vertical-align: middle;
+}
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+#body{
+  visibility:visible;
+}
+#body.hide{
+  visibility:hidden;
+}
+.main{
+ margin-top:-50px;
 }

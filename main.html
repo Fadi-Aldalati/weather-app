@@ -16,18 +16,20 @@
     </head>
     <body >
         
-        
+        <div id="body">
+            <div id="loaderContainer">
+                <div  id="loading"></div>
+            </div>
         <h1 class="center" id="head"></h1>
         <div class="container">
             <div class="row">
-            <div class="col button-container">
+            <div class="col" id="button">
                 
-                    <input type="text" class="rounded" id="getCity" onchange="test(value)" placeholder="choose another city ..." name="getCity"/>
+                <input type="text" class="rounded" id="getCity" onchange="test(value)" placeholder="choose another city ..." name="getCity"/>
             </div>
             <div class="col">
         <div class="center">
             <div id="today"></div>
-            <!--div id="time"></div-->
             <div id="date"></div>
         </div>
             </div>
@@ -35,24 +37,27 @@
         </div>
         <div class="grid-container-details">
             <div class="grid-item">
-                <div id="todayIcon"></div>
+                <div class="paddingTop" id="todayIcon"></div>
             </div>
-            <div class="grid-item" >
-                <div class="w3-padding-top-32" id="high"></div>
-                <div  class="paddingTop"id="low"></div>
+            <div class="grid-item">
+                <h4 class="w3-padding-top-24" id="high"></h4>
+                <h4  class="paddingTop"id="low"></h4>
             </div>
-            <div class="grid-item" >
-                <div class="w3-padding-top-32" id="wind"></div>
-                <div  class="paddingTop" id="humidity"></div>
+            <div class="grid-item">
+                <h4 class="w3-padding-top-24" id="wind"></h4>
+                <h4  class="paddingTop" id="humidity"></h4>
             </div>
         </div>
+        
         <div class="grid-container" id="main">
 
         </div>
         
+        
     <div class="grid-container-details" id="detailsOfDay">
         
     </div>
+        </div >
         
     </body>
     <script type="text/javascript" src="./jsFiles/main.js">

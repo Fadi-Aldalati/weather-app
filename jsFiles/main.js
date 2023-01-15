@@ -60,7 +60,6 @@ function test(value){
         })
         .then((data) => {
           hideLoading();
-          displayMain();
           displayButton();
           
           idCounter=0;

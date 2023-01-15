@@ -84,10 +84,10 @@ body{
   height:55px;
   width:50px; }
 #loading {
-    width: 3rem;
-    height: 3rem;
-    border: 5px solid black;//#f3f3f3;
-    border-top: 6px solid white;//#9c41f2;
+    width: 5rem;
+    height: 5rem;
+    border: 9px solid #5F9EA0;
+    border-top: 9px solid black;
     border-radius: 100%;
     margin: auto;
     visibility: hidden;
@@ -117,5 +117,5 @@ body{
   visibility:hidden;
 }
 .main{
- margin-top:-50px;
+ margin-top:-75px;
 }
